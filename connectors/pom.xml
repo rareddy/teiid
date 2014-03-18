@@ -124,5 +124,7 @@
     <module>connector-accumulo</module>
     <module>translator-solr</module>
     <module>connector-solr</module>
+    <module>translator-kairosdb</module>
+    <module>connector-kairosdb</module>
   </modules>
 </project>
