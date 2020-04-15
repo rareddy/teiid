@@ -20,15 +20,19 @@ package org.teiid.resource.adapter.salesforce;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.teiid.salesforce.BaseSalesforceConnection;
+import org.teiid.translator.salesforce.execution.DataPayload;
 import org.teiid.translator.salesforce.execution.DeletedResult;
 
 import com.sforce.soap.partner.DeletedRecord;
 import com.sforce.soap.partner.GetDeletedResult;
 import com.sforce.soap.partner.PartnerConnection;
+import com.sforce.soap.partner.sobject.SObject;
 
 @SuppressWarnings("nls")
 public class TestSalesforceConnectionImpl {
@@ -47,6 +51,14 @@ public class TestSalesforceConnectionImpl {
         SalesforceConnectionImpl sfci = new SalesforceConnectionImpl(pc);
         DeletedResult result = sfci.getDeleted("x", null, null);
         assertEquals(1, result.getResultRecords().size());
+    }
+
+    @Test public void testUpdateValues() throws Exception {
+        DataPayload payload = new DataPayload();
+        payload.addField("hello", "world");
+        payload.addField("null", null);
+        SObject obj = BaseSalesforceConnection.toUpdateSObject(new ArrayList<>(), payload);
+        assertArrayEquals(new String [] {"null"}, obj.getFieldsToNull());
     }
 
 }
